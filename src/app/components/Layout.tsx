@@ -9,7 +9,7 @@ export function Layout() {
 
   return (
     <div className="w-full h-full relative flex flex-col bg-[#f8f9fa]">
-      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide pb-24">
+      <div className={`flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide ${showNav ? 'pb-24' : ''}`}>
         <Outlet />
       </div>
       {showNav && <BottomNav />}
