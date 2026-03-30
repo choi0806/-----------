@@ -158,6 +158,30 @@ export function SettingsScreen() {
           </div>
         </div>
 
+        {/* 개발자 메뉴 (테스트용) */}
+        <div className="mt-10 mb-10 p-4 bg-gray-50 rounded-2xl">
+          <h2 className="text-[14px] font-bold text-gray-500 mb-3">
+            개발자 메뉴 (Debug Navigation)
+          </h2>
+          <div className="grid grid-cols-2 gap-2">
+            <button onClick={() => navigate('/onboarding')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+              온보딩 화면
+            </button>
+            <button onClick={() => navigate('/login')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+              로그인 화면
+            </button>
+            <button onClick={() => navigate('/protect')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+              보호 진행 화면
+            </button>
+            <button onClick={() => navigate('/premium')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+              프리미엄 화면
+            </button>
+            <button onClick={() => navigate('/gallery')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+              갤러리 화면
+            </button>
+          </div>
+        </div>
+
       </div>
       
       <PremiumBottomSheet isOpen={showPremium} onClose={() => setShowPremium(false)} />
