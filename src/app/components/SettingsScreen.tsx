@@ -2,11 +2,9 @@ import { ChevronLeft, ChevronRight, Menu, Info } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { Switch } from "./ui/switch";
-import { PremiumBottomSheet } from "./PremiumBottomSheet";
 
 export function SettingsScreen() {
   const navigate = useNavigate();
-  const [showPremium, setShowPremium] = useState(false);
   const [autoLogin, setAutoLogin] = useState(true);
   const [bioAuth, setBioAuth] = useState(false);
   const [autoProtect, setAutoProtect] = useState(true);
@@ -48,7 +46,7 @@ export function SettingsScreen() {
             <ChevronRight className="w-4 h-4 text-gray-300" strokeWidth={2.5} />
           </button>
 
-          <button onClick={() => setShowPremium(true)} className="w-full flex items-center justify-between py-4 border-b border-gray-100">
+          <button onClick={() => navigate('/subscription')} className="w-full flex items-center justify-between py-4 border-b border-gray-100">
             <span className="text-[15px] font-medium text-[#111]">구독 플랜 관리</span>
             <div className="flex items-center gap-2">
               <span className="text-[#5438d1] font-bold text-[13px]">Basic</span>
@@ -170,13 +168,13 @@ export function SettingsScreen() {
             <button onClick={() => navigate('/login')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
               로그인 화면
             </button>
-            <button onClick={() => navigate('/protect')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+            <button onClick={() => navigate('/photo-select')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
               보호 진행 화면
             </button>
-            <button onClick={() => navigate('/premium')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+            <button onClick={() => navigate('/subscription')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
               프리미엄 화면
             </button>
-            <button onClick={() => navigate('/gallery')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
+            <button onClick={() => navigate('/album')} className="py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-700 active:scale-95 transition-transform">
               갤러리 화면
             </button>
           </div>
@@ -184,7 +182,6 @@ export function SettingsScreen() {
 
       </div>
       
-      <PremiumBottomSheet isOpen={showPremium} onClose={() => setShowPremium(false)} />
     </div>
   );
 }

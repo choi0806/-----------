@@ -46,7 +46,7 @@ export function BottomNav() {
 
           {/* Center FAB */}
           <button
-            onClick={() => navigate('/protect')}
+            onClick={() => navigate('/photo-select')}
             className="absolute left-1/2 -translate-x-1/2 -top-5 flex items-center justify-center"
           >
             <div className="w-[64px] h-[64px] bg-[#6B4EFF] rounded-full flex items-center justify-center shadow-lg shadow-[#6B4EFF]/30 transition-transform active:scale-95">

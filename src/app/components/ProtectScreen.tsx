@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   ArrowLeft,
@@ -19,38 +19,49 @@ import {
   Settings,
   Leaf
 } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { Switch } from "./ui/switch";
 import { Slider } from "./ui/slider";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { BottomNav } from "./BottomNav";
+import { useProtect } from "./ProtectContext";
+import { allPhotos } from "./constants";
 
 // Flow: select photos → choose plan → apply filter → export
 
-const allPhotos = [
-  { id: 1, url: "https://images.unsplash.com/photo-1565124608772-6906e85401fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2xvcmZ1bCUyMHBvcnRyYWl0JTIwd29tYW4lMjBmYXNoaW9ufGVufDF8fHx8MTc3Mzc1ODUwN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#FEF3C7" },
-  { id: 2, url: "https://images.unsplash.com/photo-1732494569693-937db5acbd14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBwb3J0cmFpdCUyMHN0cmVldHdlYXIlMjBjb2xvcmZ1bHxlbnwxfHx8fDE3NzM3NTg1MTF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#DBEAFE" },
-  { id: 3, url: "https://images.unsplash.com/photo-1662695089339-a2c24231a3ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHdvbWFuJTIwc2VsZmllJTIwYnJpZ2h0JTIwY2hlZXJmdWx8ZW58MXx8fHwxNzczNzU4NTEzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#FCE7F3" },
-  { id: 4, url: "https://images.unsplash.com/photo-1764698192198-4cfb7188c6d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHBvcnRyYWl0JTIwY29sb3JmdWwlMjBiYWNrZ3JvdW5kJTIwZmFzaGlvbiUyMGVkaXRvcmlhbHxlbnwxfHx8fDE3NzM3NTg1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#EDE9FE" },
-  { id: 5, url: "https://images.unsplash.com/photo-1629382346161-fbdcaa2e3f07?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdWNjdWxlbnQlMjBwbGFudCUyMG1pbmltYWwlMjBwYXN0ZWx8ZW58MXx8fHwxNzczNzU4NTA4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#D1FAE5" },
-  { id: 6, url: "https://images.unsplash.com/photo-1687988809201-ea68da0233ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3R0b24lMjBjYW5keSUyMHBpbmslMjBhZXN0aGV0aWMlMjBmb29kfGVufDF8fHx8MTc3Mzc1ODUxMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#FDE6D5" },
-  { id: 7, url: "https://images.unsplash.com/photo-1521202850558-0110494d0457?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmFuZ2UlMjBnZW9tZXRyaWMlMjBhcmNoaXRlY3R1cmUlMjBhYnN0cmFjdHxlbnwxfHx8fDE3NzM3NTg1MTJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#FED7AA" },
-  { id: 8, url: "https://images.unsplash.com/photo-1652553276399-7a97a855f38d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibHVlJTIweWVsbG93JTIwYWJzdHJhY3QlMjBvYmplY3QlMjBtaW5pbWFsfGVufDF8fHx8MTc3Mzc1ODUwN3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#DBEAFE" },
-  { id: 9, url: "https://images.unsplash.com/photo-1773608940070-b44b0ded5d95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYW1lcmElMjBwaG90b2dyYXBoeSUyMGVxdWlwbWVudCUyMGNvbG9yZnVsfGVufDF8fHx8MTc3Mzc1ODUxMnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", bg: "#E0E7FF" },
-];
-
-type Step = "init" | "select" | "plan" | "processing" | "export";
+type Step = "init" | "select" | "plan" | "processing" | "result" | "saved";
 
 export function ProtectScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const {
+    selectedIds, setSelectedIds,
+    noiseIntensity, setNoiseIntensity,
+    preserveQuality, setPreserveQuality,
+    selectedPlan, setSelectedPlan,
+    advancedOptions, setAdvancedOptions
+  } = useProtect();
+
   const [step, setStep] = useState<Step>("init");
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [noiseIntensity, setNoiseIntensity] = useState([50]);
-  const [preserveQuality, setPreserveQuality] = useState(true);
-  const [selectedPlan, setSelectedPlan] = useState<"basic" | "premium">("basic");
-  const [advancedOptions, setAdvancedOptions] = useState({ removeExif: true, addWatermark: false });
   const [progress, setProgress] = useState(0);
   const [showShareSheet, setShowShareSheet] = useState(false);
+
+  // Parse step from URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes("photo-select")) {
+      // We start at init and can jump to select, let's just keep step logic local except for major shifts
+      if (step !== "init" && step !== "select" && step !== "plan") {
+        setStep("init");
+      }
+    } else if (path.includes("processing")) {
+      setStep("processing");
+    } else if (path.includes("result")) {
+      setStep("result");
+    } else if (path.includes("saved")) {
+      setStep("saved");
+    }
+  }, [location.pathname]);
 
   const toggleSelect = (id: number) => {
     setSelectedIds((prev) =>
@@ -59,19 +70,25 @@ export function ProtectScreen() {
   };
 
   const startFilter = () => {
-    setStep("processing");
-    setProgress(0);
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setStep("export"), 400);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 40);
+    navigate("/processing", { replace: true });
   };
+
+  useEffect(() => {
+    if (step === "processing") {
+      setProgress(0);
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setTimeout(() => navigate("/result", { replace: true }), 400);
+            return 100;
+          }
+          return prev + 2;
+        });
+      }, 40);
+      return () => clearInterval(interval);
+    }
+  }, [step, navigate]);
 
   return (
     <div className="size-full flex flex-col bg-white relative overflow-hidden">
@@ -99,9 +116,9 @@ export function ProtectScreen() {
             <div className="flex-1 flex items-center justify-center relative w-full mb-6 z-10 min-h-0 px-6">
               <div className="relative w-full max-h-full aspect-square flex items-center justify-center scale-90">
                 <img 
-                  src="/illustration.png" 
+                  src="/assets/illustration.png" 
                   alt="3D Lock and Folder Illustration"
-                  className="w-full h-full object-contain mix-blend-multiply" 
+                  className="w-full h-full object-contain mix-blend-multiply"
                 />
               </div>
             </div>
@@ -439,7 +456,7 @@ export function ProtectScreen() {
         )}
 
         {/* STEP 4: 사진 내보내기 (Export - Save / Share) */}
-        {step === "export" && (
+        {(step === "result" || step === "saved") && (
           <motion.div
             key="export"
             initial={{ opacity: 0, scale: 0.96 }}
@@ -449,7 +466,7 @@ export function ProtectScreen() {
             {/* Header */}
             <div className="flex items-center justify-end px-5 pt-12 pb-2">
               <button
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/home")}
                 className="w-9 h-9 flex items-center justify-center active:opacity-50"
               >
                 <X className="w-7 h-7 text-black" strokeWidth={2.5} />
@@ -463,8 +480,11 @@ export function ProtectScreen() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-[26px] font-black tracking-[-0.04em] text-black leading-[1.35] mb-3"
               >
-                축하합니다.<br />
-                보호가 완료됐어요. 👏
+                {step === "result" ? (
+                  <>보호 처리가<br />완료되었어요. 👏</>
+                ) : (
+                  <>성공적으로<br />저장되었어요. 🌟</>
+                )}
               </motion.h1>
               <motion.p 
                 initial={{ opacity: 0, y: 10 }}
@@ -570,11 +590,14 @@ export function ProtectScreen() {
 
             {/* Bottom Actions Container */}
             <div className="px-5 pb-10 pt-4 flex flex-col gap-3">
-              <button 
-                className="w-full py-4.5 rounded-[16px] bg-white border border-[#e2e8f0] text-black font-bold text-[17px] active:scale-[0.98] transition-all h-[56px] shadow-sm flex items-center justify-center"
-              >
-                갤러리에 저장
-              </button>
+              {step === "result" && (
+                <button 
+                  onClick={() => navigate("/saved")}
+                  className="w-full py-4.5 rounded-[16px] bg-white border border-[#e2e8f0] text-black font-bold text-[17px] active:scale-[0.98] transition-all h-[56px] shadow-sm flex items-center justify-center"
+                >
+                  갤러리에 저장
+                </button>
+              )}
               <button 
                 onClick={() => setShowShareSheet(true)}
                 className="w-full py-4.5 rounded-[16px] bg-black text-white font-bold text-[17px] active:scale-[0.98] transition-all h-[56px] shadow-lg shadow-black/10 flex items-center justify-center"

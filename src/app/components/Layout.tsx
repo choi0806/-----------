@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router";
 import { BottomNav } from "./BottomNav";
 
-const hideNavPaths = ["/protect", "/premium"];
+const hideNavPaths = ["/photo-select", "/processing", "/result", "/saved", "/subscription"];
 
 export function Layout() {
   const location = useLocation();

@@ -106,15 +106,15 @@ export function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
             onClick={next}
             className="w-full max-w-[260px] h-[58px] rounded-full bg-[#111111] flex items-center justify-center gap-3 text-white font-semibold text-[15px] active:scale-[0.98] transition-transform"
           >
-            {current === slides.length - 1 ? 'Get Started' : 'Next'}
+            {current === slides.length - 1 ? '시작하기' : '다음'}
             <ArrowRight className="w-4 h-4 text-white" strokeWidth={2.5} />
           </button>
-          
-          <button 
+
+          <button
             onClick={onComplete}
             className="text-[#999999] font-medium text-[13px] active:text-[#111111] transition-colors"
           >
-            Skip onboarding and login
+            건너뛰고 로그인하기
           </button>
         </div>
       </div>

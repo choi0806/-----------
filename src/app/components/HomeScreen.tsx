@@ -6,7 +6,7 @@ export function HomeScreen() {
 
   // 사진을 터치했을 때 보호(Protect) 화면으로 이동하는 함수
   const handleProtect = () => {
-    navigate('/protect');
+    navigate('/photo-select');
   };
 
   return (
