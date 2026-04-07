@@ -21,9 +21,8 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { Switch } from "./ui/switch";
-import { Slider } from "./ui/slider";
+
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { BottomNav } from "./BottomNav";
 import { useProtect } from "./ProtectContext";
 import { allPhotos } from "./constants";
 
@@ -45,6 +44,7 @@ export function ProtectScreen() {
   const [step, setStep] = useState<Step>("init");
   const [progress, setProgress] = useState(0);
   const [showShareSheet, setShowShareSheet] = useState(false);
+  const [compareMode, setCompareMode] = useState<"after" | "before">("after");
 
   // Parse step from URL
   useEffect(() => {
@@ -106,9 +106,9 @@ export function ProtectScreen() {
             <div className="relative z-10 shrink-0 px-6">
               <button
                 onClick={() => navigate(-1)}
-                className="w-10 h-10 flex items-center justify-start text-gray-400"
+                className="w-10 h-10 rounded-xl bg-[#f8f9fa] flex items-center justify-center"
               >
-                <ArrowLeft className="w-7 h-7" strokeWidth={1.5} />
+                <ArrowLeft className="w-5 h-5 text-foreground" />
               </button>
             </div>
 
@@ -230,8 +230,8 @@ export function ProtectScreen() {
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 pt-10 pb-4 bg-[#fdfdfd] z-10 relative">
-              <button onClick={() => setStep("select")} className="text-black active:opacity-50">
-                <ArrowLeft className="w-6 h-6" strokeWidth={2.5} />
+              <button onClick={() => setStep("select")} className="w-10 h-10 rounded-xl bg-[#f8f9fa] flex items-center justify-center">
+                <ArrowLeft className="w-5 h-5 text-foreground" />
               </button>
               <h2 className="text-[18px] font-bold text-black tracking-tight absolute left-1/2 -translate-x-1/2">보호 설정</h2>
               <div className="w-6" />
@@ -289,90 +289,70 @@ export function ProtectScreen() {
                 )}
               </div>
 
-              {/* Settings Container */}
+              {/* Filter Options - Premium only */}
               <div className="mb-3 px-1">
-                <h3 className="text-[17px] font-bold text-gray-900 tracking-tight">필터 옵션</h3>
-              </div>
-              
-              <div className="bg-white border border-gray-100 p-5 rounded-[24px] mb-8 shadow-sm">
-                 {/* Intensity Slider */}
-                 <div className="mb-6">
-                   <div className="flex justify-between items-center mb-5">
-                     <div>
-                       <span className="font-bold text-[15px] text-gray-900">보호 필터 강도</span>
-                       <p className="text-[13px] font-medium text-gray-500 mt-1">노이즈의 세기를 조절합니다</p>
-                     </div>
-                     <span className="text-[18px] font-black text-[#5b61f6]">{noiseIntensity[0]}%</span>
-                   </div>
-                   <Slider 
-                     value={noiseIntensity} 
-                     onValueChange={setNoiseIntensity} 
-                     max={100} 
-                     step={1} 
-                     className="w-full cursor-pointer"
-                   />
-                   <div className="flex justify-between mt-3 px-1">
-                     <span className="text-gray-400 text-[12px] font-bold">자연스러움</span>
-                     <span className="text-gray-400 text-[12px] font-bold">강력 보호</span>
-                   </div>
-                 </div>
-                 
-                 <div className="w-full h-[1px] bg-gray-100 my-6" />
-
-                 <div className="flex items-center justify-between">
-                   <div>
-                     <h4 className="text-[15px] font-bold text-gray-900">화질 보호</h4>
-                     <p className="text-[13px] font-medium text-gray-500 mt-1">원본 사진의 선명도를 유지합니다</p>
-                   </div>
-                   <Switch 
-                     checked={preserveQuality} 
-                     onCheckedChange={setPreserveQuality} 
-                     className="data-[state=checked]:bg-[#5b61f6]"
-                   />
-                 </div>
-              </div>
-
-              {/* Premium Settings Container */}
-              <div className="mb-3 px-1 mt-6">
                 <h3 className="text-[17px] font-bold text-gray-900 tracking-tight flex items-center gap-1.5">
-                  세부 보호 옵션 <Crown className="w-4 h-4 text-[#f59e0b]" strokeWidth={2.5} />
+                  필터 옵션 <Crown className="w-4 h-4 text-[#f59e0b]" strokeWidth={2.5} />
                 </h3>
               </div>
-              
-              <div className={`transition-all duration-500 relative bg-white border border-gray-100 p-5 rounded-[24px] mb-8 shadow-sm ${selectedPlan === 'basic' ? 'grayscale opacity-[0.4] pointer-events-none' : ''}`}>
-                 {selectedPlan === 'basic' && (
-                   <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-                     <div className="bg-black/80 backdrop-blur-sm text-white px-5 py-3 rounded-full text-[13px] font-bold flex items-center gap-2 shadow-2xl">
-                       <Lock className="w-4 h-4" /> Premium 전용 설정
-                     </div>
-                   </div>
-                 )}
 
-                 <div className="flex items-center justify-between mb-6 mt-1">
-                   <div>
-                     <h4 className="text-[15px] font-bold text-gray-900">비가시성 워터마크</h4>
-                     <p className="text-[13px] font-medium text-gray-500 mt-1">눈에 보이지 않는 저작권 서명 추가</p>
-                   </div>
-                   <Switch 
-                     checked={advancedOptions.addWatermark} 
-                     onCheckedChange={(val) => setAdvancedOptions({...advancedOptions, addWatermark: val})} 
-                     className="data-[state=checked]:bg-[#18181b]"
-                   />
-                 </div>
+              <div className={`relative bg-white border border-gray-100 p-5 rounded-[24px] mb-8 shadow-sm transition-all duration-500 ${selectedPlan === 'basic' ? 'grayscale opacity-[0.4] pointer-events-none' : ''}`}>
+                {selectedPlan === 'basic' && (
+                  <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                    <div className="bg-black/80 backdrop-blur-sm text-white px-5 py-3 rounded-full text-[13px] font-bold flex items-center gap-2 shadow-2xl">
+                      <Lock className="w-4 h-4" /> Premium 전용 설정
+                    </div>
+                  </div>
+                )}
 
-                 <div className="w-full h-[1px] bg-gray-100 my-5" />
+                {/* Low / Mid / High */}
+                <div className="mb-1">
+                  <span className="font-bold text-[15px] text-gray-900">보호 필터 강도</span>
+                  <p className="text-[13px] font-medium text-gray-500 mt-1 mb-4">노이즈의 세기를 조절합니다</p>
+                  <div className="flex gap-3">
+                    {(["Low", "Mid", "High"] as const).map((level, i) => {
+                      const val = [33, 66, 100][i];
+                      const isSelected = noiseIntensity[0] === val;
+                      return (
+                        <button
+                          key={level}
+                          onClick={() => setNoiseIntensity([val])}
+                          className={`flex-1 py-3 rounded-[14px] text-[14px] font-bold transition-all ${isSelected ? 'bg-[#5b61f6] text-white shadow-md shadow-[#5b61f6]/30' : 'bg-[#f2f3f5] text-[#8b94a0]'}`}
+                        >
+                          {level}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                 <div className="flex items-center justify-between mb-1">
-                   <div>
-                     <h4 className="text-[15px] font-bold text-gray-900">메타데이터(EXIF) 삭제</h4>
-                     <p className="text-[13px] font-medium text-gray-500 mt-1">촬영 위치, 시간 등 민감 정보 차단</p>
-                   </div>
-                   <Switch 
-                     checked={advancedOptions.removeExif} 
-                     onCheckedChange={(val) => setAdvancedOptions({...advancedOptions, removeExif: val})} 
-                     className="data-[state=checked]:bg-[#18181b]"
-                   />
-                 </div>
+                <div className="w-full h-[1px] bg-gray-100 my-5" />
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-[15px] font-bold text-gray-900">화질 보호</h4>
+                    <p className="text-[13px] font-medium text-gray-500 mt-1">원본 사진의 선명도를 유지합니다</p>
+                  </div>
+                  <Switch
+                    checked={preserveQuality}
+                    onCheckedChange={setPreserveQuality}
+                    className="data-[state=checked]:bg-[#5b61f6]"
+                  />
+                </div>
+
+                <div className="w-full h-[1px] bg-gray-100 my-5" />
+
+                <div className="flex items-center justify-between mb-1">
+                  <div>
+                    <h4 className="text-[15px] font-bold text-gray-900">메타데이터(EXIF) 삭제</h4>
+                    <p className="text-[13px] font-medium text-gray-500 mt-1">촬영 위치, 시간 등 민감 정보 차단</p>
+                  </div>
+                  <Switch
+                    checked={advancedOptions.removeExif}
+                    onCheckedChange={(val) => setAdvancedOptions({...advancedOptions, removeExif: val})}
+                    className="data-[state=checked]:bg-[#18181b]"
+                  />
+                </div>
               </div>
             </div>
 
@@ -497,94 +477,68 @@ export function ProtectScreen() {
               </motion.p>
             </div>
 
-            {/* Center Animation Area - Matches the reference image style */}
-            <div className="flex-1 flex items-center justify-center relative w-full overflow-hidden">
-              
-              {/* Phone Shape */}
-              <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="relative w-[130px] h-[270px] bg-[#4254f5] rounded-[24px] shadow-xl flex items-center justify-center z-10 border-[3px] border-[#e2e8f0]"
-              >
-                {/* Phone screen notch */}
-                <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-10 h-1 bg-white/40 rounded-full" />
-                
-                {/* Logo inside phone */}
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md">
-                   <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                     <path d="M10 20C10 14.4772 14.4772 10 20 10V14C16.6863 14 14 16.6863 14 20H10Z" fill="#4254f5"/>
-                     <path d="M20 10C25.5228 10 30 14.4772 30 20H26C26 16.6863 23.3137 14 20 14V10Z" fill="#4254f5"/>
-                     <path d="M10 20C10 25.5228 14.4772 30 20 30V26C16.6863 26 14 23.3137 14 20H10Z" fill="#4254f5"/>
-                     <circle cx="20" cy="20" r="4" fill="#4254f5"/>
-                     <rect x="18" y="2" width="4" height="12" fill="#4254f5"/>
-                   </svg>
-                </div>
-              </motion.div>
+            {/* Before / After Compare Area */}
+            <div className="flex-1 flex flex-col items-center justify-center relative w-full overflow-hidden px-5 gap-4">
+              {/* Toggle Buttons */}
+              <div className="flex bg-[#f2f3f5] p-1 rounded-[14px] w-full max-w-[240px]">
+                <button
+                  onClick={() => setCompareMode("after")}
+                  className={`flex-1 py-2 text-[13px] font-bold rounded-[10px] transition-all duration-200 ${
+                    compareMode === "after" ? "bg-white text-black shadow-sm" : "text-[#8b94a0]"
+                  }`}
+                >
+                  보호 후
+                </button>
+                <button
+                  onClick={() => setCompareMode("before")}
+                  className={`flex-1 py-2 text-[13px] font-bold rounded-[10px] transition-all duration-200 ${
+                    compareMode === "before" ? "bg-white text-black shadow-sm" : "text-[#8b94a0]"
+                  }`}
+                >
+                  원본
+                </button>
+              </div>
 
-              {/* Floating Elements (similar to reference) */}
-              
-              {/* Right Floating Card */}
-              <motion.div 
-                animate={{ y: [0, -8, 0], rotate: [20, 20, 20] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute right-[12%] bottom-[35%] w-[70px] h-[100px] bg-[#3b82f6] rounded-[10px] shadow-lg flex items-center justify-center z-0 border-[2px] border-[#e2e8f0]"
-              >
-                 <ImagePlus className="w-6 h-6 text-white" />
-              </motion.div>
-
-              {/* Left Floating Badge (Black Pill) */}
+              {/* Image Preview */}
               <motion.div
-                initial={{ scale: 0, rotate: -20 }}
-                animate={{ scale: 1, rotate: -15, y: [-4, 4, -4] }}
-                transition={{ 
-                  scale: { type: "spring", delay: 0.4 },
-                  y: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
-                }}
-                className="absolute left-[8%] top-[50%] bg-black text-white px-4 py-2.5 rounded-[12px] font-black text-[13px] tracking-wide shadow-xl z-20"
+                key={compareMode}
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.2 }}
+                className="relative w-full aspect-square rounded-[24px] overflow-hidden bg-gray-100 shadow-md"
               >
-                PROTECTED
-              </motion.div>
+                {selectedIds.length > 0 ? (
+                  <ImageWithFallback
+                    src={allPhotos.find((x) => x.id === selectedIds[0])?.url || ""}
+                    alt=""
+                    className={`w-full h-full object-cover transition-all duration-300 ${
+                      compareMode === "after" ? "brightness-[0.92] contrast-[1.04]" : ""
+                    }`}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <ImageIcon className="w-12 h-12 text-gray-400" />
+                  </div>
+                )}
 
-              {/* Stars & shapes */}
-              <motion.div 
-                animate={{ rotate: 180 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                className="absolute left-[20%] top-[25%]"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#4254f5"/>
-                </svg>
-              </motion.div>
+                {/* Noise overlay for after */}
+                {compareMode === "after" && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
+                      opacity: (noiseIntensity[0] / 100) * 0.6,
+                      mixBlendMode: "overlay",
+                    }}
+                  />
+                )}
 
-              <motion.div 
-                animate={{ rotate: -180, scale: [1, 1.2, 1] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                className="absolute right-[25%] top-[20%]"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#e2e8f0"/>
-                </svg>
-              </motion.div>
-
-              <motion.div 
-                animate={{ rotate: 90 }}
-                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                className="absolute right-[20%] bottom-[20%]"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#e2e8f0"/>
-                </svg>
-              </motion.div>
-              
-              <motion.div 
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute left-[25%] bottom-[30%]"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#4254f5"/>
-                </svg>
+                {/* Label badge */}
+                <div className={`absolute top-3 left-3 px-3 py-1.5 rounded-full text-[12px] font-bold shadow-md ${
+                  compareMode === "after" ? "bg-[#5b61f6] text-white" : "bg-black/60 text-white"
+                }`}>
+                  {compareMode === "after" ? "보호 완료" : "원본"}
+                </div>
               </motion.div>
             </div>
 
@@ -678,9 +632,6 @@ export function ProtectScreen() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Render BottomNav statically during init step so it doesn't animate/blink/jump */}
-      {step === "init" && <BottomNav />}
     </div>
   );
 }

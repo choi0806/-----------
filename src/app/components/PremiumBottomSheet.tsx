@@ -173,7 +173,7 @@ export function PremiumBottomSheet({ isOpen, onClose }: PremiumBottomSheetProps)
                       <CheckCircle2 className={`w-6 h-6 ${agreed ? "fill-[#7C6CF0] text-white" : ""}`} strokeWidth={agreed ? 1.5 : 2} />
                     </div>
                     <span className="text-gray-800 font-medium" style={{ fontSize: "14.5px" }}>
-                      AEGIS 프리미엄 이용약관에 동의합니다.
+                      aegis 프리미엄 이용약관에 동의합니다.
                     </span>
                   </button>
                   <button className="ml-9 text-gray-400 underline underline-offset-2" style={{ fontSize: "13px" }}>

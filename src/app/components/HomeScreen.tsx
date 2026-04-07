@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Menu, Image as ImageIcon } from 'lucide-react';
+import { Menu, Image as ImageIcon, ChevronDown, Clock, Type } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 export function HomeScreen() {
   const navigate = useNavigate();
+  const [sortOrder, setSortOrder] = useState<'latest' | 'name'>('latest');
 
   // 사진을 터치했을 때 보호(Protect) 화면으로 이동하는 함수
   const handleProtect = () => {
@@ -14,11 +17,30 @@ export function HomeScreen() {
       {/* Header */}
       <div className="pt-12 px-6 pb-6 flex items-center justify-between">
         <span className="text-[26px] font-bold tracking-tight text-black">aegis</span>
-        <button className="p-1 active:opacity-50">
-          <Menu className="w-6 h-6 text-gray-800" strokeWidth={2.5} />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="p-1 active:opacity-50 outline-none">
+              <Menu className="w-6 h-6 text-gray-800" strokeWidth={2.5} />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40 rounded-xl shadow-lg border-gray-100">
+            <DropdownMenuItem 
+              onClick={() => setSortOrder('latest')}
+              className={`flex items-center gap-2 py-3 px-3 cursor-pointer ${sortOrder === 'latest' ? 'bg-gray-50 text-black font-semibold' : 'text-gray-600'}`}
+            >
+              <Clock className="w-4 h-4" />
+              <span>최신순</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+              onClick={() => setSortOrder('name')}
+              className={`flex items-center gap-2 py-3 px-3 cursor-pointer ${sortOrder === 'name' ? 'bg-gray-50 text-black font-semibold' : 'text-gray-600'}`}
+            >
+              <Type className="w-4 h-4" />
+              <span>이름순</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-
       {/* Static 2-Column Masonry Grid */}
       <div className="px-5 flex gap-3 h-full items-start">
         {/* Left Column */}

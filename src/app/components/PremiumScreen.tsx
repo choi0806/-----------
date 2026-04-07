@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { ArrowLeft } from "lucide-react";
 import { PremiumBottomSheet } from "./PremiumBottomSheet";
 
 export function PremiumScreen() {
@@ -11,8 +12,8 @@ export function PremiumScreen() {
     <div className="size-full flex flex-col bg-[#fcfcfc] text-gray-900 relative overflow-hidden font-sans">
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-12 pb-4 shrink-0">
-        <button onClick={() => navigate(-1)} className="text-[11px] font-semibold tracking-wider text-gray-400 uppercase active:opacity-50">
-          BACK
+        <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-xl bg-[#f8f9fa] flex items-center justify-center">
+          <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
         <span className="text-[11px] font-semibold tracking-wider text-gray-400 uppercase">
           PLAN
@@ -43,7 +44,7 @@ export function PremiumScreen() {
         {/* Title & Price */}
         <div className="mb-10">
           <h1 className="text-[26px] font-normal tracking-tight mb-3 text-gray-800">
-            AEGIS Plan
+            aegis Plan
           </h1>
           <p className="text-[44px] font-light tracking-tighter text-gray-900">
             {tab === "basic" ? "₩0" : "₩4,900"}
@@ -67,7 +68,7 @@ export function PremiumScreen() {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-[13px] text-gray-500">워터마크</span>
-            <span className="text-[13px] font-medium text-gray-800 text-right">{tab === "basic" ? "AEGIS 워터마크 포함" : "완벽 제거"}</span>
+            <span className="text-[13px] font-medium text-gray-800 text-right">{tab === "basic" ? "aegis 워터마크 포함" : "완벽 제거"}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-[13px] text-gray-500">화질 유지</span>
@@ -90,12 +91,6 @@ export function PremiumScreen() {
 
       {/* Bottom Actions */}
       <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-[#fcfcfc] via-[#fcfcfc] to-transparent flex gap-3 z-10 items-end pb-8">
-        <button 
-          onClick={() => alert("구매 내역 복원 기능")}
-          className="flex-1 py-4 rounded-2xl bg-gray-100/80 text-gray-700 font-medium text-[14px] active:scale-95 transition-transform"
-        >
-          Restore
-        </button>
         <button
           onClick={() => {
             if (tab === "premium") {
@@ -104,9 +99,9 @@ export function PremiumScreen() {
               navigate(-1);
             }
           }}
-          className="flex-[1.6] py-4 rounded-2xl bg-[#0a0a0a] text-white font-medium text-[14px] active:scale-95 transition-transform shadow-[0_8px_20px_rgba(0,0,0,0.12)]"
+          className="w-full py-4 rounded-2xl bg-[#0a0a0a] text-white font-medium text-[14px] active:scale-95 transition-transform shadow-[0_8px_20px_rgba(0,0,0,0.12)]"
         >
-          {tab === "basic" ? "계속하기" : "결제하기"}
+          결제하기
         </button>
       </div>
 

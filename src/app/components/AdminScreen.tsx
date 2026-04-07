@@ -36,7 +36,7 @@ export function AdminScreen() {
       <div className="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0">
         <div className="h-16 flex items-center px-6 border-b border-gray-100">
           <ShieldAlert className="w-6 h-6 text-[#4254f5] mr-2" strokeWidth={2.5} />
-          <span className="text-[18px] font-black text-gray-900 tracking-tight">AEGIS Admin</span>
+          <span className="text-[18px] font-black text-gray-900 tracking-tight">aegis Admin</span>
         </div>
         
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">

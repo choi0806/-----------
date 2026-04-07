@@ -53,7 +53,7 @@ export function SplashScreen() {
         <div className="w-[40vw] max-w-[160px] flex flex-col items-center justify-center">
           <Shield className="w-full h-auto text-white" strokeWidth={1.2} />
           <h1 className="text-white text-[32px] font-black tracking-widest mt-2 mb-0">
-            Aegis
+            aegis
           </h1>
         </div>
 
