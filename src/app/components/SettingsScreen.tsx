@@ -41,8 +41,18 @@ export function SettingsScreen() {
             </div>
           </button>
 
-          <button className="w-full flex items-center justify-between py-4">
+          <button className="w-full flex items-center justify-between py-4 border-b border-gray-100">
+            <span className="text-[15px] font-medium text-[#111]">구독 해지</span>
+            <ChevronRight className="w-4 h-4 text-gray-300" strokeWidth={2.5} />
+          </button>
+
+          <button className="w-full flex items-center justify-between py-4 border-b border-gray-100">
             <span className="text-[15px] font-medium text-[#111]">로그아웃</span>
+            <ChevronRight className="w-4 h-4 text-gray-300" strokeWidth={2.5} />
+          </button>
+
+          <button className="w-full flex items-center justify-between py-4">
+            <span className="text-[15px] font-medium text-red-500">회원 탈퇴</span>
             <ChevronRight className="w-4 h-4 text-gray-300" strokeWidth={2.5} />
           </button>
         </div>
