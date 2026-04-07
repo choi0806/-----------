@@ -14,7 +14,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-[48px] font-black text-black tracking-widest italic"
+          className="text-[48px] font-black text-black tracking-normal"
         >
           aegis
         </motion.h1>

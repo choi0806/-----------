@@ -52,7 +52,7 @@ export function SplashScreen() {
         {/* 로고 영역: 화면 너비의 40% (최대 160dp) 반응형 */}
         <div className="w-[40vw] max-w-[160px] flex flex-col items-center justify-center">
           <Shield className="w-full h-auto text-white" strokeWidth={1.2} />
-          <h1 className="text-white text-[32px] font-black tracking-widest mt-2 mb-0">
+          <h1 className="text-white text-[32px] font-black tracking-normal mt-2 mb-0">
             aegis
           </h1>
         </div>

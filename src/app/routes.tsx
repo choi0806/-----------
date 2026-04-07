@@ -21,6 +21,13 @@ function LoginRoute() {
   return <LoginScreen onLogin={() => navigate("/home", { replace: true })} />;
 }
 
+function PremiumActivate() {
+  const navigate = useNavigate();
+  localStorage.setItem("isPremium", "true");
+  navigate("/home", { replace: true });
+  return null;
+}
+
 function ProtectLayout() {
   return (
     <ProtectProvider>
@@ -64,6 +71,7 @@ export const router = createBrowserRouter([
       { path: "/splash", Component: SplashScreen },
       { path: "/onboarding", Component: OnboardingRoute },
       { path: "/login", Component: LoginRoute },
+      { path: "/premium", Component: PremiumActivate },
       {
         path: "/",
         Component: ProtectLayout,

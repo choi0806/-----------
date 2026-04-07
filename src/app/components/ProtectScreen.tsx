@@ -482,20 +482,20 @@ export function ProtectScreen() {
               {/* Toggle Buttons */}
               <div className="flex bg-[#f2f3f5] p-1 rounded-[14px] w-full max-w-[240px]">
                 <button
-                  onClick={() => setCompareMode("after")}
-                  className={`flex-1 py-2 text-[13px] font-bold rounded-[10px] transition-all duration-200 ${
-                    compareMode === "after" ? "bg-white text-black shadow-sm" : "text-[#8b94a0]"
-                  }`}
-                >
-                  보호 후
-                </button>
-                <button
                   onClick={() => setCompareMode("before")}
                   className={`flex-1 py-2 text-[13px] font-bold rounded-[10px] transition-all duration-200 ${
                     compareMode === "before" ? "bg-white text-black shadow-sm" : "text-[#8b94a0]"
                   }`}
                 >
                   원본
+                </button>
+                <button
+                  onClick={() => setCompareMode("after")}
+                  className={`flex-1 py-2 text-[13px] font-bold rounded-[10px] transition-all duration-200 ${
+                    compareMode === "after" ? "bg-white text-black shadow-sm" : "text-[#8b94a0]"
+                  }`}
+                >
+                  보호 후
                 </button>
               </div>
 

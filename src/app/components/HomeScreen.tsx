@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Menu, Image as ImageIcon, ChevronDown, Clock, Type } from 'lucide-react';
+import { Menu, Image as ImageIcon, Clock, Type, Infinity } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 export function HomeScreen() {
   const navigate = useNavigate();
   const [sortOrder, setSortOrder] = useState<'latest' | 'name'>('latest');
+  const isPremium = localStorage.getItem('isPremium') === 'true';
 
   // 사진을 터치했을 때 보호(Protect) 화면으로 이동하는 함수
   const handleProtect = () => {
@@ -101,31 +102,31 @@ export function HomeScreen() {
           <div className="absolute -inset-2 bg-[#6e63f5]/20 blur-xl rounded-full opacity-70"></div>
           
           <div className="relative bg-[#0a0a0a] rounded-[20px] px-8 py-5 flex items-center shadow-2xl">
-            {/* Progress Circle Ring */}
-            <div className="relative w-14 h-14 mr-6 shrink-0">
-              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                {/* Background Ring */}
-                <circle 
-                  cx="50" cy="50" r="40" 
-                  fill="none" stroke="#252535" strokeWidth="8"
-                />
-                {/* Foreground Ring (Progress: e.g. 60%) */}
-                <circle 
-                  cx="50" cy="50" r="40" 
-                  fill="none" stroke="#ffffff" strokeWidth="8" strokeLinecap="round"
-                  strokeDasharray="251.2" strokeDashoffset="100.48"
-                />
-              </svg>
+            {/* Progress Circle Ring / Premium Icon */}
+            <div className="relative w-14 h-14 mr-6 shrink-0 flex items-center justify-center">
+              {isPremium ? (
+                <Infinity className="w-10 h-10 text-[#a78bfa]" strokeWidth={2} />
+              ) : (
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#252535" strokeWidth="8" />
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#ffffff" strokeWidth="8" strokeLinecap="round" strokeDasharray="251.2" strokeDashoffset="100.48" />
+                </svg>
+              )}
             </div>
             
             {/* Text Stats */}
             <div className="flex flex-col">
-              <span className="text-white text-[24px] font-bold leading-none mb-1">
-                3/5
-              </span>
-              <span className="text-gray-400 text-[13px] font-medium tracking-tight">
-                무료 사용 횟수
-              </span>
+              {isPremium ? (
+                <>
+                  <span className="text-[#a78bfa] text-[24px] font-bold leading-none mb-1">Premium</span>
+                  <span className="text-gray-400 text-[13px] font-medium tracking-tight">무제한 사용 가능</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-white text-[24px] font-bold leading-none mb-1">3/5</span>
+                  <span className="text-gray-400 text-[13px] font-medium tracking-tight">무료 사용 횟수</span>
+                </>
+              )}
             </div>
           </div>
         </div>
