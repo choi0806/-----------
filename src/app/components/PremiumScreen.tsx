@@ -47,7 +47,7 @@ export function PremiumScreen() {
             aegis Plan
           </h1>
           <p className="text-[44px] font-light tracking-tighter text-gray-900">
-            {tab === "basic" ? "₩0" : "₩4,900"}
+            {tab === "basic" ? "₩0" : "₩5,900"}
           </p>
         </div>
 
@@ -85,7 +85,7 @@ export function PremiumScreen() {
         {/* Total */}
         <div className="flex justify-between items-center">
           <span className="text-[13px] font-medium text-gray-800">Total (KRW)</span>
-          <span className="text-[15px] font-medium text-gray-900">{tab === "basic" ? "₩0" : "₩4,900/월"}</span>
+          <span className="text-[15px] font-medium text-gray-900">{tab === "basic" ? "₩0" : "₩5,900/월"}</span>
         </div>
       </div>
 
