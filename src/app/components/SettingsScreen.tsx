@@ -63,16 +63,6 @@ export function SettingsScreen() {
             앱 정보
           </h2>
 
-          <button className="w-full flex items-center justify-between py-4 border-b border-gray-100">
-            <span className="text-[15px] font-medium text-[#111]">도움말 및 FAQ</span>
-            <ChevronRight className="w-4 h-4 text-gray-300" strokeWidth={2.5} />
-          </button>
-
-          <button className="w-full flex items-center justify-between py-4 border-b border-gray-100">
-            <span className="text-[15px] font-medium text-[#111]">이용약관 및 정책</span>
-            <ChevronRight className="w-4 h-4 text-gray-300" strokeWidth={2.5} />
-          </button>
-
           <div className="w-full flex items-center justify-between py-4">
             <span className="text-[15px] font-medium text-[#111]">버전 정보</span>
             <span className="text-[14px] text-[#5438d1] font-bold">1.0.0</span>
